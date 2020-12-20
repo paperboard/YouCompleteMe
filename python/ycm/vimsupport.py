@@ -336,7 +336,19 @@ def SetLocationListsForBuffer( buffer_number, diagnostics ):
 def SetLocationListForWindow( window_number, diagnostics ):
   """Populate the location list with diagnostics. Diagnostics should be in
   qflist format; see ":h setqflist" for details."""
-  vim.eval( f'setloclist( { window_number }, { json.dumps( diagnostics ) } )' )
+  vim.eval( f'setloclist( 0, { json.dumps( diagnostics ) } )' )
+  vim.command( "call setloclist(0, [], 'a', {'title': 'Diagnostics'})" )
+
+
+def AutoLocationList(focus = False, errcount = 0):
+
+    if errcount > 0:
+        vim.command( 'lopen 10' )
+    else:
+        vim.command( 'lclose' )
+
+    if not focus:
+        JumpToPreviousWindow()
 
 
 def OpenLocationList( focus = False, autoclose = False ):

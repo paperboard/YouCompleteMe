@@ -70,6 +70,7 @@ class DiagnosticInterface:
 
     if self._user_options[ 'always_populate_location_list' ]:
       self._UpdateLocationLists()
+      vimsupport.AutoLocationList(focus = False, errcount = self.GetErrorCount())
 
 
   def _ApplyDiagnosticFilter( self, diags ):
@@ -114,7 +115,7 @@ class DiagnosticInterface:
   def _UpdateLocationLists( self ):
     vimsupport.SetLocationListsForBuffer(
       self._bufnr,
-      vimsupport.ConvertDiagnosticsToQfList( self._diagnostics ) )
+      vimsupport.ConvertDiagnosticsToQfList( self._diagnostics ) ) 
 
 
   def UpdateMatches( self ):
