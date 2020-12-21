@@ -30,6 +30,7 @@ class DiagnosticInterface:
     self._line_to_diags = defaultdict( list )
     self._previous_diag_line_number = -1
     self._diag_message_needs_clearing = False
+    self._balloontext = ''
 
 
   def OnCursorMoved( self ):
@@ -46,6 +47,10 @@ class DiagnosticInterface:
 
   def GetWarningCount( self ):
     return self._DiagnosticsCount( _DiagnosticIsWarning )
+
+
+  def GetErrorMessage( self ):
+    return self._balloontext
 
 
   def PopulateLocationList( self ):
@@ -103,6 +108,7 @@ class DiagnosticInterface:
 
     vimsupport.PostVimMessage( text, warning = False, truncate = True )
     self._diag_message_needs_clearing = True
+    self._balloontext = text
 
 
   def _DiagnosticsCount( self, predicate ):

@@ -649,6 +649,10 @@ class YouCompleteMe:
     return self.CurrentBuffer().GetWarningCount()
 
 
+  def GetErrorMessage( self ):
+    return self.CurrentBuffer().GetErrorMessage()
+
+
   def _PopulateLocationListWithLatestDiagnostics( self ):
     return self.CurrentBuffer().PopulateLocationList()
 

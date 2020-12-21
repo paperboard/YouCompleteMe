@@ -341,7 +341,9 @@ def SetLocationListForWindow( window_number, diagnostics ):
 
 
 def AutoLocationList(focus = False, errcount = 0):
-
+    """Open the location list if errors exist.
+    Close the location list when all errors are fixed.
+    Maintain height of 10."""
     if errcount > 0:
         vim.command( 'lopen 10' )
     else:

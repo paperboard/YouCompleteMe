@@ -239,6 +239,11 @@ function! youcompleteme#GetWarningCount()
 endfunction
 
 
+function! youcompleteme#GetErrorMessage()
+  return py3eval( 'ycm_state.GetErrorMessage()' )
+endfunction
+
+
 function! s:SetUpPython() abort
   py3 << EOF
 import os.path as p
