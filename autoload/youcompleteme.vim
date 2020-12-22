@@ -53,7 +53,7 @@ let s:pollers = {
       \   },
       \   'receive_messages': {
       \     'id': -1,
-      \     'wait_milliseconds': 100
+      \     'wait_milliseconds': 300
       \   },
       \   'command': {
       \     'id': -1,
@@ -72,6 +72,7 @@ let s:enable_hover = 0
 let s:cursorhold_popup = -1
 
 let s:force_preview_popup = 0
+let s:diagnostic_popup_winid = 0
 
 let s:RESOLVE_NONE = 0
 let s:RESOLVE_UP_FRONT = 1
@@ -812,6 +813,17 @@ function! s:OnCursorMovedNormalMode()
   endif
 
   py3 ycm_state.OnCursorMoved()
+
+  " show diagnostics in popup
+  let s:err = youcompleteme#GetErrorMessage()
+  if strlen(s:err)
+    let s:diagnostic_popup_winid = popup_atcursor(s:err,  #{
+				\ moved: 'any',
+				\ highlight: 'YcmErrorSign',
+				\ padding: [0,1,0,1],
+				\ })
+  endif
+
 endfunction
 
 

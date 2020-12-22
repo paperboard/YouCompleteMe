@@ -252,6 +252,7 @@ def CreateSign( line, name, buffer_number ):
 
 def UnplaceSign( sign ):
   vim.command( f'sign unplace { sign.id } buffer={ sign.buffer_number }' )
+  vim.command( f'let s:nop = popup_close(s:diagnostic_popup_winid)' )
 
 
 def PlaceSign( sign ):

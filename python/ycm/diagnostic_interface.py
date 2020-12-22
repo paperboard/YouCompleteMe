@@ -99,6 +99,7 @@ class DiagnosticInterface:
         # Clear any previous diag echo
         vimsupport.PostVimMessage( '', warning = False )
         self._diag_message_needs_clearing = False
+        self._balloontext = ''
       return
 
     first_diag = diags[ 0 ]
