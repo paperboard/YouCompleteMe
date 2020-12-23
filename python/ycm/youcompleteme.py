@@ -493,6 +493,17 @@ class YouCompleteMe:
       # are that non-visible buffer errors clobber visible ones.
       self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
     else:
+    
+      # Show diagnostics for entire project. Jump to window/buffer as needed.
+      # Once file is opened, it becomes the focused and visible window/buffer.
+      # ctrl+o can be used to get back to previous window/buffer. 
+      vimsupport.OpenFilename( filepath, {
+        'command': 'same-buffer',
+        'focus': True,
+      } )
+      bufnr = vimsupport.GetBufferNumberForFilename( filepath )
+      self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
+
       # The project contains errors in file "filepath", but that file is not
       # open in any buffer. This happens for Language Server Protocol-based
       # completers, as they return diagnostics for the entire "project"
