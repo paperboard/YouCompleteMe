@@ -819,6 +819,7 @@ function! s:OnCursorMovedNormalMode()
   if strlen(s:err)
     let s:diagnostic_popup_winid = popup_atcursor(s:err,  #{
 				\ moved: 'any',
+                \ line: 'cursor+1',
 				\ highlight: 'YcmErrorSign',
 				\ padding: [0,1,0,1],
 				\ })
