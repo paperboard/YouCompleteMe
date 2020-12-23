@@ -822,6 +822,7 @@ function! s:OnCursorMovedNormalMode()
                 \ line: 'cursor+1',
 				\ highlight: 'YcmErrorSign',
 				\ padding: [0,1,0,1],
+                \ maxheight: 1,
 				\ })
   endif
 

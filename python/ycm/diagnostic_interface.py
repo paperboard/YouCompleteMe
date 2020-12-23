@@ -50,7 +50,7 @@ class DiagnosticInterface:
 
 
   def GetErrorMessage( self ):
-    return self._balloontext
+    return self._balloontext.replace("\n", "")
 
 
   def PopulateLocationList( self ):
@@ -97,7 +97,7 @@ class DiagnosticInterface:
     if not diags:
       if self._diag_message_needs_clearing:
         # Clear any previous diag echo
-        vimsupport.PostVimMessage( '', warning = False )
+        #vimsupport.PostVimMessage( '', warning = False )
         self._diag_message_needs_clearing = False
         self._balloontext = ''
       return
@@ -107,7 +107,7 @@ class DiagnosticInterface:
     if first_diag.get( 'fixit_available', False ):
       text += ' (FixIt)'
 
-    vimsupport.PostVimMessage( text, warning = False, truncate = True )
+    #vimsupport.PostVimMessage( text, warning = False, truncate = True )
     self._diag_message_needs_clearing = True
     self._balloontext = text
 
