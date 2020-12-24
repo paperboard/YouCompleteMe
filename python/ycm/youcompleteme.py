@@ -488,42 +488,52 @@ class YouCompleteMe:
 
     bufnr = vimsupport.GetBufferNumberForFilename( filepath )
     if bufnr in self._buffers and vimsupport.BufferIsVisible( bufnr ):
+      
       # Note: We only update location lists, etc. for visible buffers, because
       # otherwise we default to using the current location list and the results
       # are that non-visible buffer errors clobber visible ones.
       self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
-    else:
-    
-      # Show diagnostics for entire project. Jump to window/buffer as needed.
-      # Once file is opened, it becomes the focused and visible window/buffer.
-      # ctrl+o can be used to get back to previous window/buffer. 
-      vimsupport.OpenFilename( filepath, {
-        'command': 'same-buffer',
-        'focus': True,
-      } )
-      bufnr = vimsupport.GetBufferNumberForFilename( filepath )
-      self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
 
-      # The project contains errors in file "filepath", but that file is not
-      # open in any buffer. This happens for Language Server Protocol-based
-      # completers, as they return diagnostics for the entire "project"
-      # asynchronously (rather than per-file in the response to the parse
-      # request).
-      #
-      # There are a number of possible approaches for
-      # this, but for now we simply ignore them. Other options include:
-      # - Use the QuickFix list to report project errors?
-      # - Use a special buffer for project errors
-      # - Put them in the location list of whatever the "current" buffer is
-      # - Store them in case the buffer is opened later
-      # - add a :YcmProjectDiags command
-      # - Add them to errror/warning _counts_ but not any actual location list
-      #   or other
-      # - etc.
-      #
-      # However, none of those options are great, and lead to their own
-      # complexities. So for now, we just ignore these diagnostics for files not
-      # open in any buffer.
+    else:
+
+      # if for some reason, diagnostics is empty, return.
+      if len(diagnostics) == 0:
+          return
+
+      # errors are always at the top, warning below, so peek at 0 location.
+      first_diag = diagnostics[0]
+
+      if first_diag[ 'kind' ] != 'WARNING':
+          # Show diagnostics for entire project. Jump to window/buffer as needed.
+          # Once file is opened, it becomes the focused and visible window/buffer.
+          # ctrl+o can be used to get back to previous window/buffer. 
+          vimsupport.OpenFilename( filepath, {
+            'command': 'same-buffer',
+            'focus': False,
+          } )
+          bufnr = vimsupport.GetBufferNumberForFilename( filepath )
+          self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
+
+          # The project contains errors in file "filepath", but that file is not
+          # open in any buffer. This happens for Language Server Protocol-based
+          # completers, as they return diagnostics for the entire "project"
+          # asynchronously (rather than per-file in the response to the parse
+          # request).
+          #
+          # There are a number of possible approaches for
+          # this, but for now we simply ignore them. Other options include:
+          # - Use the QuickFix list to report project errors?
+          # - Use a special buffer for project errors
+          # - Put them in the location list of whatever the "current" buffer is
+          # - Store them in case the buffer is opened later
+          # - add a :YcmProjectDiags command
+          # - Add them to errror/warning _counts_ but not any actual location list
+          #   or other
+          # - etc.
+          #
+          # However, none of those options are great, and lead to their own
+          # complexities. So for now, we just ignore these diagnostics for files not
+          # open in any buffer.
       pass
 
 
@@ -660,8 +670,12 @@ class YouCompleteMe:
     return self.CurrentBuffer().GetWarningCount()
 
 
-  def GetErrorMessage( self ):
-    return self.CurrentBuffer().GetErrorMessage()
+  def GetDiagnosticMessage( self ):
+    return self.CurrentBuffer().GetDiagnosticMessage()
+
+
+  def GetDiagnosticType( self ):
+    return self.CurrentBuffer().GetDiagnosticType()
 
 
   def _PopulateLocationListWithLatestDiagnostics( self ):

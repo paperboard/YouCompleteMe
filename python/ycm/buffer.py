@@ -116,8 +116,13 @@ class Buffer:
   def GetWarningCount( self ):
     return self._diag_interface.GetWarningCount()
 
-  def GetErrorMessage( self ):
-    return self._diag_interface.GetErrorMessage()
+
+  def GetDiagnosticMessage( self ):
+    return self._diag_interface.GetDiagnosticMessage()
+
+
+  def GetDiagnosticType( self ):
+    return self._diag_interface.GetDiagnosticType()
 
 
   def UpdateFromFileTypes( self, filetypes ):

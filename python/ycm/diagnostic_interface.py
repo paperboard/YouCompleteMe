@@ -30,7 +30,8 @@ class DiagnosticInterface:
     self._line_to_diags = defaultdict( list )
     self._previous_diag_line_number = -1
     self._diag_message_needs_clearing = False
-    self._balloontext = ''
+    self._diagnostictext = ''
+    self._diagnostictype = ''
 
 
   def OnCursorMoved( self ):
@@ -49,8 +50,12 @@ class DiagnosticInterface:
     return self._DiagnosticsCount( _DiagnosticIsWarning )
 
 
-  def GetErrorMessage( self ):
-    return self._balloontext.replace("\n", "")
+  def GetDiagnosticMessage( self ):
+    return self._diagnostictext.replace("\n", "")
+
+
+  def GetDiagnosticType( self ):
+    return self._diagnostictype
 
 
   def PopulateLocationList( self ):
@@ -75,7 +80,7 @@ class DiagnosticInterface:
 
     if self._user_options[ 'always_populate_location_list' ]:
       self._UpdateLocationLists()
-      vimsupport.AutoLocationList(focus = False, errcount = self.GetErrorCount())
+      vimsupport.AutoLocationList(focus = False, errcount = self.GetErrorCount(), warncount = self.GetWarningCount())
 
 
   def _ApplyDiagnosticFilter( self, diags ):
@@ -99,7 +104,8 @@ class DiagnosticInterface:
         # Clear any previous diag echo
         #vimsupport.PostVimMessage( '', warning = False )
         self._diag_message_needs_clearing = False
-        self._balloontext = ''
+        self._diagnostictext = ''
+        self._diagnostictype = ''
       return
 
     first_diag = diags[ 0 ]
@@ -109,7 +115,9 @@ class DiagnosticInterface:
 
     #vimsupport.PostVimMessage( text, warning = False, truncate = True )
     self._diag_message_needs_clearing = True
-    self._balloontext = text
+    self._diagnostictext = text
+    self._diagnostictype = 'YcmError' if _DiagnosticIsError( first_diag ) else 'YcmWarning'
+    vimsupport.PostVimMessage( self._diagnostictype, warning = False, truncate = True )
 
 
   def _DiagnosticsCount( self, predicate ):

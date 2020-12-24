@@ -240,8 +240,13 @@ function! youcompleteme#GetWarningCount()
 endfunction
 
 
-function! youcompleteme#GetErrorMessage()
-  return py3eval( 'ycm_state.GetErrorMessage()' )
+function! youcompleteme#GetDiagnosticMessage()
+  return py3eval( 'ycm_state.GetDiagnosticMessage()' )
+endfunction
+
+
+function! youcompleteme#GetDiagnosticType()
+  return py3eval( 'ycm_state.GetDiagnosticType()' )
 endfunction
 
 
@@ -815,12 +820,12 @@ function! s:OnCursorMovedNormalMode()
   py3 ycm_state.OnCursorMoved()
 
   " show diagnostics in popup
-  let s:err = youcompleteme#GetErrorMessage()
-  if strlen(s:err)
-    let s:diagnostic_popup_winid = popup_atcursor(s:err,  #{
+  let s:diagmsg = youcompleteme#GetDiagnosticMessage()
+  if strlen(s:diagmsg)
+    let s:diagnostic_popup_winid = popup_atcursor(s:diagmsg,  #{
 				\ moved: 'any',
                 \ line: 'cursor+1',
-				\ highlight: 'YcmErrorSign',
+				\ highlight: youcompleteme#GetDiagnosticType() . 'Sign',
 				\ padding: [0,1,0,1],
                 \ maxheight: 1,
 				\ })

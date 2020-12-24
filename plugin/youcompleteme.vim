@@ -172,7 +172,7 @@ let g:ycm_error_symbol =
 
 let g:ycm_warning_symbol =
       \ get( g:, 'ycm_warning_symbol',
-      \ get( g:, 'syntastic_warning_symbol', '⚠' ) )
+      \ get( g:, 'syntastic_warning_symbol', '>>' ) )
 
 let g:ycm_complete_in_comments =
       \ get( g:, 'ycm_complete_in_comments', 0 )

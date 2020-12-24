@@ -341,11 +341,11 @@ def SetLocationListForWindow( window_number, diagnostics ):
   vim.command( "call setloclist(0, [], 'a', {'title': 'Diagnostics'})" )
 
 
-def AutoLocationList(focus = False, errcount = 0):
+def AutoLocationList(focus = False, errcount = 0, warncount = 0):
     """Open the location list if errors exist.
     Close the location list when all errors are fixed.
     Maintain height of 10."""
-    if errcount > 0:
+    if errcount > 0 or warncount > 0:
         vim.command( 'lopen 10' )
     else:
         vim.command( 'lclose' )
