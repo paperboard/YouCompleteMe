@@ -117,7 +117,6 @@ class DiagnosticInterface:
     self._diag_message_needs_clearing = True
     self._diagnostictext = text
     self._diagnostictype = 'YcmError' if _DiagnosticIsError( first_diag ) else 'YcmWarning'
-    vimsupport.PostVimMessage( self._diagnostictype, warning = False, truncate = True )
 
 
   def _DiagnosticsCount( self, predicate ):
