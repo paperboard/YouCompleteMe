@@ -15,6 +15,16 @@
 " You should have received a copy of the GNU General Public License
 " along with YouCompleteMe.  If not, see <http://www.gnu.org/licenses/>.
 
+if exists('g:youcompleteme#loaded')
+    finish
+else
+    let g:youcompleteme#loaded = 1
+endif
+
+function! youcompleteme#autoloader()
+    echo "YouCompleteMe [ Loaded ]"
+endfunction
+
 " This is basic vim plugin boilerplate
 let s:save_cpo = &cpo
 set cpo&vim
