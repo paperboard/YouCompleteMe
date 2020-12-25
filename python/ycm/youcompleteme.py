@@ -495,6 +495,11 @@ class YouCompleteMe:
       self._buffers[ bufnr ].UpdateWithNewDiagnostics( diagnostics )
 
     else:
+    
+      # I have disabled this feature as it is causing many problems.
+      # I hope to use vim-go for "project wide" compile errors, and
+      # use YouCompleteMe only for visible buffer real-time diagnostics.
+      return
 
       # if for some reason, diagnostics is empty, return.
       if len(diagnostics) == 0:
