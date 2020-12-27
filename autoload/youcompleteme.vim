@@ -21,10 +21,6 @@ else
     let g:youcompleteme#loaded = 1
 endif
 
-function! youcompleteme#autoloader()
-    echo "YouCompleteMe [ Loaded ]"
-endfunction
-
 " This is basic vim plugin boilerplate
 let s:save_cpo = &cpo
 set cpo&vim
